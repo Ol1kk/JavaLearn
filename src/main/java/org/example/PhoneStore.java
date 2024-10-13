@@ -1,34 +1,54 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class PhoneStore {
 
-    public void addNewPhone(String key, String vendor, String model, double price, String color) {
-    HashMap<String, Phone> phones = new HashMap<>();
-//        phones.put("First", new Phone("Apple", "iPhone", 24.10, "black"));
-//        phones.put("Second", new Phone("Samsung", "Galaxy", 24.10, "black"));
-//        phones.put("Third", new Phone("Samsung", "Galaxy", 24.10, "black"));
+    HashMap<Integer, Phone> phones = new HashMap<>();
+    int id = 2;
 
-    //HashSet<Phone> one = new HashSet<Phone>();
+    // БЫЛО УКРАДЕНО С StackOverflow ПОТОМУ ЧТО Я УМЕЮ СРАВНИВАТЬ ТОЛЬКО ОБЬЕКТЫ ЦЕЛИКОМ
+    public boolean containsPhone(String vendor, String model) {
+        return phones.values().stream()
+                .anyMatch(phone -> phone.getVendor().equals(vendor) && phone.getModel().equals(model));
+    }
+
+    public void addNewPhone(Integer key, String vendor, String model, double price, String color) {
         Phone newPhone = new Phone(vendor, model, price, color);
-
         for (
-        Map.Entry<String, Phone> entry : phones.entrySet()) {
-        String valueKey = entry.getKey();
-        Phone valuePhone = entry.getValue();
-        // System.out.println("Key: " + key + ", Value: " + value);
-        if (phones.containsKey(valuePhone)) {
-            System.out.println("Данный товар уже есть в магазине");
+                Map.Entry<Integer, Phone> entry : phones.entrySet()) {
+
+            boolean containsPhoneResult = containsPhone(vendor, model);
+
+            if (containsPhoneResult) {
+                System.out.println("Данный товар уже есть в магазине");
+            } else {
+                phones.put(id, newPhone);
+                System.out.println("Товар добавлен");
+                id++;
+            }
+        }
+
+    }
+
+    public void showAllItems() {
+        System.out.println(phones);
+    }
+
+    public void deleteObjects(Integer keyInput) {
+        if (phones.containsKey(keyInput)) {
+            phones.remove(keyInput);
+            System.out.println("Товар успешно удален");
         } else {
-            phones.put(key, valuePhone);
-            System.out.println("Товар добавлен");
+            System.out.println("Товар не найден. Уточните номер товара в общем списке");
         }
     }
 
+    public void sortBy (String sortType) {
+        List<Map.Entry<Integer, Phone>> phonesList = new ArrayList<>(phones.entrySet());
+        Comparator<vendor> comparator = Comparator.comparing(obj -> obj.getId());
+        Collections.sort(phonesList, comparator);
+    }
 
-}
 }
 
