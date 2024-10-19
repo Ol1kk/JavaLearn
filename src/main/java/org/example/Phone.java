@@ -26,12 +26,15 @@ public class Phone {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (o != null && this.getClass() == o.getClass()) {
-            Phone phone = (Phone)o;
-            return Objects.equals(this.vendor, phone.vendor) && Objects.equals(this.model, phone.model) && Objects.equals(this.price, phone.price) && Objects.equals(this.color, phone.color);
-        } else {
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        Phone phone = (Phone) o;
+        return Objects.equals(vendor, phone.vendor) &&
+                Objects.equals(model, phone.model) &&
+                Objects.equals(price, phone.price) &&
+                Objects.equals(color, phone.color);
     }
 
     public int hashCode() {
@@ -42,6 +45,7 @@ public class Phone {
         this.vendor = vendor;
         this.model = model;
         this.price = price;
+        this.color = null;
     }
 
     public Phone(String vendor, String model, Double price, String color) {
@@ -50,15 +54,16 @@ public class Phone {
         this.price = price;
         this.color = color;
     }
-    
 
 
-    public int compareTo(Phone o) {
+    public int compareVendors(Phone other) {
+        return this.vendor.compareTo(other.vendor);
+    }
 
-        int result = this.model.compareTo(o.model);
 
-        return result;
-    };
+    public int compareToPrices(Phone other) {
+        return Double.compare(this.price, other.price);
+    }
 
 
 
